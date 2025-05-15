@@ -1,0 +1,56 @@
+{% extends 'layout.html' %}
+
+{% block title %}Secure Answer Key Authentication{% endblock %}
+
+{% block body_class %}answer-key-auth-page{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card border-0 shadow-sm">
+            <div class="card-header bg-dark">
+                <h2 class="mb-0">
+                    <i class="fas fa-lock me-2"></i> Secure Answer Key Access
+                </h2>
+            </div>
+            
+            <div class="card-body p-4">
+                <div class="mb-4">
+                    <h3>{{ template.title }} - Version {{ test_version.version_number }}</h3>
+                    <p class="mb-0">Test ID: <strong>{{ access_code }}</strong></p>
+                </div>
+                
+                <div class="alert alert-info">
+                    <i class="fas fa-info-circle me-2"></i> This answer key is password-protected. Please enter the password provided by the teacher to access it.
+                </div>
+                
+                <form method="post">
+                    {{ form.csrf_token }}
+                    
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Password</label>
+                        {{ form.password(class="form-control", placeholder="Enter password") }}
+                        {% if form.password.errors %}
+                            <div class="invalid-feedback d-block">
+                                {% for error in form.password.errors %}
+                                    {{ error }}
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="d-grid">
+                        {{ form.submit(class="btn btn-primary") }}
+                    </div>
+                </form>
+                
+                <div class="mt-4 text-center">
+                    <p class="mb-0 text-muted">
+                        <small>If you're a student, please contact your teacher for the password.</small>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

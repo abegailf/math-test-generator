@@ -1,0 +1,78 @@
+{% extends 'layout.html' %}
+
+{% block title %}Answer Key: {{ template.title }} (V{{ test_version.version_number }}){% endblock %}
+
+{% block body_class %}answer-key-page{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-10">
+        <div class="card border-0 shadow-sm">
+            <div class="card-header bg-dark">
+                <h2 class="mb-0">
+                    <i class="fas fa-key me-2"></i> Answer Key: {{ template.title }} - Version {{ test_version.version_number }}
+                </h2>
+            </div>
+            
+            <div class="card-body p-4">
+                <div class="mb-4">
+                    <div class="d-flex align-items-center flex-wrap">
+                        <span class="badge {% if template.difficulty == 'easy' %}badge-easy{% elif template.difficulty == 'medium' %}badge-medium{% else %}badge-hard{% endif %} me-3">
+                            {{ template.difficulty.capitalize() }}
+                        </span>
+                        
+                        <span class="me-3">
+                            <i class="fas fa-list-ol me-1"></i> {{ template.num_questions }} Questions
+                        </span>
+                        
+                        <span class="me-3">
+                            <i class="fas fa-fingerprint me-1"></i> Test ID: {{ test_version.get_access_code() }}
+                        </span>
+                        
+                        <div>
+                            {% for topic in template.topics.split(',') %}
+                                <span class="topic-pill">{{ topic.capitalize() }}</span>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="alert alert-success">
+                    <i class="fas fa-lock-open me-2"></i> You have successfully authenticated. This page contains the answers to Test Version {{ test_version.version_number }}.
+                </div>
+                
+                <div class="list-group">
+                    {% for question in questions %}
+                        <div class="list-group-item list-group-item-action bg-dark border-0 mb-3">
+                            <div class="d-flex w-100 justify-content-between align-items-start">
+                                <h5 class="mb-2">Question {{ question.order }}</h5>
+                                <span class="badge bg-primary">{{ question.answer }}</span>
+                            </div>
+                            <p class="mb-2">{{ question.question_text }}</p>
+                            
+                            {% if question.solution_steps %}
+                                <div class="card bg-body-tertiary mt-2">
+                                    <div class="card-body py-2">
+                                        <small class="text-muted">Solution:</small>
+                                        <p class="mb-0 mt-1">{{ question.solution_steps }}</p>
+                                    </div>
+                                </div>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                </div>
+                
+                <div class="d-flex justify-content-between mt-4">
+                    <a href="{{ url_for('view_test_version', test_uuid=test_version.uuid) }}" class="btn btn-outline-secondary">
+                        <i class="fas fa-arrow-left me-2"></i> Back to Test
+                    </a>
+                    
+                    <a href="{{ url_for('download_answer_key_pdf', test_uuid=test_version.uuid) }}" class="btn btn-primary">
+                        <i class="fas fa-download me-2"></i> Download Answer Key PDF
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

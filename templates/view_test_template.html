@@ -1,0 +1,107 @@
+{% extends 'layout.html' %}
+
+{% block title %}{{ template.title }} | Test Template{% endblock %}
+
+{% block body_class %}test-template-page{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-10">
+        <div class="card border-0 shadow-sm">
+            <div class="card-header bg-dark d-flex justify-content-between align-items-center flex-wrap">
+                <h2 class="mb-0">{{ template.title }}</h2>
+                <span class="badge {% if template.difficulty == 'easy' %}badge-easy{% elif template.difficulty == 'medium' %}badge-medium{% else %}badge-hard{% endif %} ms-2">
+                    {{ template.difficulty.capitalize() }}
+                </span>
+            </div>
+            
+            <div class="card-body p-4">
+                <div class="mb-4">
+                    {% if template.description %}
+                        <p class="mb-3">{{ template.description }}</p>
+                    {% endif %}
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3 mb-md-0">
+                            <h5><i class="fas fa-list-ol me-2"></i> Questions: {{ template.num_questions }}</h5>
+                            <h5><i class="fas fa-copy me-2"></i> Versions: {{ template.num_versions }}</h5>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <h5><i class="fas fa-tags me-2"></i> Topics</h5>
+                            <div>
+                                {% for topic in template.topics.split(',') %}
+                                    <span class="topic-pill">{{ topic.capitalize() }}</span>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="alert alert-info">
+                    <i class="fas fa-info-circle me-2"></i> You have successfully created {{ template.num_versions }} unique versions of this test. Each version has the same topic coverage and difficulty level, but with different questions.
+                </div>
+                
+                <!-- Versions List -->
+                <h4 class="mb-3">
+                    <i class="fas fa-copy me-2"></i> Test Versions
+                </h4>
+                
+                <div class="list-group mb-4">
+                    {% for version in versions %}
+                        <div class="list-group-item list-group-item-action bg-dark border-0 mb-2 d-flex justify-content-between align-items-center flex-wrap">
+                            <div>
+                                <h5 class="mb-1">Version {{ version.version_number }}</h5>
+                                <p class="mb-0 text-muted">
+                                    <small>Test ID: {{ version.get_access_code() }}</small>
+                                </p>
+                            </div>
+                            <div class="mt-2 mt-md-0">
+                                <a href="{{ url_for('view_test_version', test_uuid=version.uuid) }}" class="btn btn-sm btn-outline-primary me-1">
+                                    <i class="fas fa-eye me-1"></i> View
+                                </a>
+                                <a href="{{ url_for('download_test_version_pdf', test_uuid=version.uuid) }}" class="btn btn-sm btn-outline-secondary">
+                                    <i class="fas fa-download me-1"></i> PDF
+                                </a>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+                
+                <div class="card bg-dark mb-4">
+                    <div class="card-body">
+                        <h4 class="mb-3">Teacher Instructions</h4>
+                        <ol>
+                            <li>Download the PDF containing all test versions or individual test PDFs.</li>
+                            <li>Each test version has a unique QR code that links to its specific answer key.</li>
+                            <li>To access an answer key, the password you created during test setup is required.</li>
+                            <li>Each test version has a unique Test ID to help you identify which version a student has.</li>
+                            <li>All test versions are equivalent in difficulty but have different questions to prevent copying.</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="test-actions">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-10">
+                <div class="d-flex justify-content-between flex-wrap">
+                    <a href="{{ url_for('create_test') }}" class="btn btn-outline-secondary mb-2 mb-md-0">
+                        <i class="fas fa-plus-circle me-2"></i> Create Another Test
+                    </a>
+                    
+                    <div>
+                        <a href="{{ url_for('download_batch_pdf', template_uuid=template.uuid) }}" class="btn btn-primary">
+                            <i class="fas fa-download me-2"></i> Download All Versions PDF
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

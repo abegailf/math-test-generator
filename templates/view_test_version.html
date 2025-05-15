@@ -1,0 +1,112 @@
+{% extends 'layout.html' %}
+
+{% block title %}{{ template.title }} (Version {{ test_version.version_number }}) | Math Test{% endblock %}
+
+{% block body_class %}math-test-page{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-10">
+        <div class="card border-0 shadow-sm">
+            <div class="card-header bg-dark d-flex justify-content-between align-items-center flex-wrap">
+                <h2 class="mb-0">{{ template.title }} - Version {{ test_version.version_number }}</h2>
+                <span class="badge {% if template.difficulty == 'easy' %}badge-easy{% elif template.difficulty == 'medium' %}badge-medium{% else %}badge-hard{% endif %} ms-2">
+                    {{ template.difficulty.capitalize() }}
+                </span>
+            </div>
+            
+            <div class="card-body p-4">
+                <div class="test-info mb-4">
+                    {% if template.description %}
+                        <p class="mb-3">{{ template.description }}</p>
+                    {% endif %}
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3 mb-md-0">
+                            <h5><i class="fas fa-list-ol me-2"></i> Questions: {{ template.num_questions }}</h5>
+                            <h5><i class="fas fa-fingerprint me-2"></i> Test ID: {{ access_code }}</h5>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <h5><i class="fas fa-tags me-2"></i> Topics</h5>
+                            <div>
+                                {% for topic in template.topics.split(',') %}
+                                    <span class="topic-pill">{{ topic.capitalize() }}</span>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row mb-4">
+                    <div class="col-md-8">
+                        <div class="card bg-dark">
+                            <div class="card-body">
+                                <h4 class="mb-3">Test Questions Preview</h4>
+                                <div class="questions-preview">
+                                    {% for question in questions[:3] %}
+                                        <div class="mb-3">
+                                            <p class="mb-1"><strong>{{ question.order }}.</strong> {{ question.question_text }}</p>
+                                            <p class="text-muted mb-0"><small>Answer space will be provided in the PDF</small></p>
+                                        </div>
+                                    {% endfor %}
+                                    
+                                    {% if questions|length > 3 %}
+                                        <div class="text-center mt-3">
+                                            <p class="text-muted">
+                                                <small>... and {{ questions|length - 3 }} more questions</small>
+                                            </p>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                                <p class="text-center mt-3 mb-0">
+                                    <small class="text-muted">Download the full PDF to view all questions.</small>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-4">
+                        <div class="card bg-dark h-100">
+                            <div class="card-body d-flex flex-column">
+                                <h4 class="mb-3">QR Code for Answers</h4>
+                                <div class="qr-code-container flex-grow-1">
+                                    <div class="qr-code">
+                                        {{ qr_code | safe }}
+                                    </div>
+                                    <p class="text-center mb-0">
+                                        <small>Scan this QR code to access the answer key. Password required.</small>
+                                    </p>
+                                </div>
+                                <a href="{{ url_for('answer_key', test_uuid=test_version.uuid) }}" class="btn btn-outline-secondary mt-3" target="_blank">
+                                    <i class="fas fa-external-link-alt me-2"></i> Access Answer Key
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="test-actions">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-10">
+                <div class="d-flex justify-content-between flex-wrap">
+                    <a href="{{ url_for('view_test_template', template_uuid=template.uuid) }}" class="btn btn-outline-secondary mb-2 mb-md-0">
+                        <i class="fas fa-arrow-left me-2"></i> Back to All Versions
+                    </a>
+                    
+                    <div>
+                        <a href="{{ url_for('download_test_version_pdf', test_uuid=test_version.uuid) }}" class="btn btn-primary">
+                            <i class="fas fa-download me-2"></i> Download Test PDF
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

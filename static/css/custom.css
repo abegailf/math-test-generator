@@ -1,0 +1,105 @@
+/* Custom styles to complement Bootstrap */
+
+/* Add more space for answer areas in test view */
+.answer-space {
+    min-height: 50px;
+    border-bottom: 1px solid var(--bs-gray-400);
+    margin-bottom: 20px;
+}
+
+/* Styling for the test form */
+.topic-checkbox-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 10px;
+}
+
+.topic-checkbox-list .form-check {
+    margin-bottom: 0.5rem;
+}
+
+/* Styling for the QR code display */
+.qr-code-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 20px 0;
+}
+
+.qr-code {
+    max-width: 200px;
+    height: auto;
+    margin-bottom: 10px;
+}
+
+/* Page-specific styles */
+body.math-test-page {
+    padding-bottom: 60px; /* Extra padding for download buttons */
+}
+
+/* PDF preview area */
+#pdf-preview {
+    margin: 20px 0;
+    border: 1px solid var(--bs-gray-300);
+    min-height: 300px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--bs-gray-100);
+}
+
+#pdf-preview canvas {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Difficulty badge colors */
+.badge-easy {
+    background-color: var(--bs-success);
+}
+
+.badge-medium {
+    background-color: var(--bs-warning);
+}
+
+.badge-hard {
+    background-color: var(--bs-danger);
+}
+
+/* Fixed action bar for test view page */
+.test-actions {
+    position: sticky;
+    bottom: 0;
+    background-color: var(--bs-body-bg);
+    padding: 10px 0;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+    z-index: 100;
+}
+
+/* Topic pills for test display */
+.topic-pill {
+    display: inline-block;
+    padding: 0.25em 0.6em;
+    font-size: 0.75em;
+    font-weight: 700;
+    line-height: 1;
+    color: #fff;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border-radius: 10rem;
+    background-color: var(--bs-info);
+    margin-right: 0.25rem;
+    margin-bottom: 0.25rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 576px) {
+    .topic-checkbox-list {
+        grid-template-columns: 1fr;
+    }
+    
+    .test-info {
+        flex-direction: column;
+    }
+}

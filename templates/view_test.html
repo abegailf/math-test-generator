@@ -1,0 +1,106 @@
+{% extends 'layout.html' %}
+
+{% block title %}{{ test.title }} | Math Test{% endblock %}
+
+{% block body_class %}math-test-page{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-10">
+        <div class="card border-0 shadow-sm">
+            <div class="card-header bg-dark d-flex justify-content-between align-items-center flex-wrap">
+                <h2 class="mb-0">{{ test.title }}</h2>
+                <span class="badge {% if test.difficulty == 'easy' %}badge-easy{% elif test.difficulty == 'medium' %}badge-medium{% else %}badge-hard{% endif %} ms-2">
+                    {{ test.difficulty.capitalize() }}
+                </span>
+            </div>
+            
+            <div class="card-body p-4">
+                <div class="test-info mb-4">
+                    {% if test.description %}
+                        <p class="mb-3">{{ test.description }}</p>
+                    {% endif %}
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3 mb-md-0">
+                            <h5><i class="fas fa-list-ol me-2"></i> Questions: {{ test.num_questions }}</h5>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <h5><i class="fas fa-tags me-2"></i> Topics</h5>
+                            <div>
+                                {% for topic in test.topics.split(',') %}
+                                    <span class="topic-pill">{{ topic.capitalize() }}</span>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row mb-4">
+                    <div class="col-md-8">
+                        <div class="card bg-dark">
+                            <div class="card-body">
+                                <h4 class="mb-3">Test Preview</h4>
+                                <div id="pdf-preview" data-pdf-url="{{ url_for('download_test_pdf', test_uuid=test.uuid) }}">
+                                    <div class="text-center">
+                                        <div class="spinner-border text-primary mb-3" role="status">
+                                            <span class="visually-hidden">Loading...</span>
+                                        </div>
+                                        <p>Loading PDF preview...</p>
+                                    </div>
+                                </div>
+                                <p class="text-center mt-3 mb-0">
+                                    <small class="text-muted">Preview may not show all pages. Download the full PDF for better quality.</small>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-4">
+                        <div class="card bg-dark h-100">
+                            <div class="card-body d-flex flex-column">
+                                <h4 class="mb-3">QR Code for Answers</h4>
+                                <div class="qr-code-container flex-grow-1">
+                                    <div class="qr-code">
+                                        {{ qr_code | safe }}
+                                    </div>
+                                    <p class="text-center mb-0">
+                                        <small>Scan this QR code to access the answer key.</small>
+                                    </p>
+                                </div>
+                                <a href="{{ url_for('answer_key', test_uuid=test.uuid) }}" class="btn btn-outline-secondary mt-3" target="_blank">
+                                    <i class="fas fa-external-link-alt me-2"></i> View Answer Key
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="test-actions">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-10">
+                <div class="d-flex justify-content-between flex-wrap">
+                    <a href="{{ url_for('create_test') }}" class="btn btn-outline-secondary mb-2 mb-md-0">
+                        <i class="fas fa-plus-circle me-2"></i> Create Another Test
+                    </a>
+                    
+                    <div>
+                        <a href="{{ url_for('download_test_pdf', test_uuid=test.uuid) }}" class="btn btn-primary me-2">
+                            <i class="fas fa-download me-2"></i> Download Test PDF
+                        </a>
+                        <a href="{{ url_for('download_answer_key_pdf', test_uuid=test.uuid) }}" class="btn btn-outline-info">
+                            <i class="fas fa-key me-2"></i> Download Answer Key
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

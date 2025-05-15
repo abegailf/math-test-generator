@@ -1,0 +1,224 @@
+{% extends 'layout.html' %}
+
+{% block title %}Create Math Test{% endblock %}
+
+{% block body_class %}create-test-page{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-10">
+        <div class="card border-0 shadow-sm">
+            <div class="card-header bg-dark">
+                <h2 class="mb-0">Create Unique Math Tests</h2>
+            </div>
+            <div class="card-body p-4">
+                <div class="alert alert-info mb-4">
+                    <i class="fas fa-info-circle me-2"></i> This tool creates multiple unique versions of the same test. Each version has different questions but maintains the same difficulty and topic coverage, making it perfect for preventing cheating while ensuring fairness.
+                </div>
+            
+                <form method="post" id="test-form">
+                    {{ form.csrf_token }}
+                    
+                    <div class="mb-3">
+                        <label for="title" class="form-label">Test Title</label>
+                        {{ form.title(class="form-control", placeholder="Enter a title for your test") }}
+                        {% if form.title.errors %}
+                            <div class="invalid-feedback d-block">
+                                {% for error in form.title.errors %}
+                                    {{ error }}
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="description" class="form-label">Description (Optional)</label>
+                        {{ form.description(class="form-control", rows=3, placeholder="Enter a description for your test") }}
+                        {% if form.description.errors %}
+                            <div class="invalid-feedback d-block">
+                                {% for error in form.description.errors %}
+                                    {{ error }}
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="row mb-3">
+                        <div class="col-md-4 mb-3 mb-md-0">
+                            <label for="difficulty" class="form-label">Difficulty Level</label>
+                            {{ form.difficulty(class="form-select") }}
+                            {% if form.difficulty.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {% for error in form.difficulty.errors %}
+                                        {{ error }}
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="col-md-4 mb-3 mb-md-0">
+                            <label for="num_questions" class="form-label">Questions per Test</label>
+                            <div class="input-group">
+                                {{ form.num_questions(class="form-control", min=1, max=50, value=10) }}
+                                <span class="input-group-text">questions</span>
+                            </div>
+                            <div id="num-questions-feedback"></div>
+                            {% if form.num_questions.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {% for error in form.num_questions.errors %}
+                                        {{ error }}
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="col-md-4">
+                            <label for="num_versions" class="form-label">Number of Versions</label>
+                            <div class="input-group">
+                                {{ form.num_versions(class="form-control", min=1, max=100, value=1) }}
+                                <span class="input-group-text">versions</span>
+                            </div>
+                            {% if form.num_versions.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {% for error in form.num_versions.errors %}
+                                        {{ error }}
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label class="form-label">Math Topics</label>
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <small class="text-muted">Select the topics to include in your test</small>
+                            <button type="button" id="toggle-all-topics" class="btn btn-sm btn-outline-secondary">Select All</button>
+                        </div>
+                        
+                        <div class="card border-0 bg-dark">
+                            <div class="card-body">
+                                <div class="topic-checkbox-list">
+                                    {% for option in form.topics %}
+                                        <div class="form-check">
+                                            {{ option(class="form-check-input") }}
+                                            {{ option.label(class="form-check-label") }}
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                        
+                        {% if form.topics.errors %}
+                            <div class="invalid-feedback d-block mt-2">
+                                {% for error in form.topics.errors %}
+                                    {{ error }}
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="card border-0 bg-dark mb-4">
+                        <div class="card-header">
+                            <h5 class="mb-0">
+                                <i class="fas fa-lock me-2"></i> Answer Key Protection
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <p class="mb-3">Set a password to protect the answer keys. Only those with the password can view the answers.</p>
+                            
+                            <div class="row">
+                                <div class="col-md-6 mb-3 mb-md-0">
+                                    <label for="password" class="form-label">Password</label>
+                                    {{ form.password(class="form-control", placeholder="Create a password") }}
+                                    {% if form.password.errors %}
+                                        <div class="invalid-feedback d-block">
+                                            {% for error in form.password.errors %}
+                                                {{ error }}
+                                            {% endfor %}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                                
+                                <div class="col-md-6">
+                                    <label for="confirm_password" class="form-label">Confirm Password</label>
+                                    {{ form.confirm_password(class="form-control", placeholder="Confirm password") }}
+                                    {% if form.confirm_password.errors %}
+                                        <div class="invalid-feedback d-block">
+                                            {% for error in form.confirm_password.errors %}
+                                                {{ error }}
+                                            {% endfor %}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="d-grid gap-2">
+                        {{ form.submit(class="btn btn-primary btn-lg") }}
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+        <div class="card border-0 shadow-sm mt-4">
+            <div class="card-body p-4">
+                <h3 class="mb-3">How This Works</h3>
+                
+                <div class="row mb-4">
+                    <div class="col-md-4 mb-3 mb-md-0">
+                        <div class="card h-100 bg-dark">
+                            <div class="card-body text-center">
+                                <i class="fas fa-random fa-3x mb-3"></i>
+                                <h5>Unique Question Generation</h5>
+                                <p>Each version has mathematically equivalent but distinctly different problems.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-4 mb-3 mb-md-0">
+                        <div class="card h-100 bg-dark">
+                            <div class="card-body text-center">
+                                <i class="fas fa-qrcode fa-3x mb-3"></i>
+                                <h5>Secure Answer Access</h5>
+                                <p>Each test has a unique QR code linking to a password-protected answer key.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-4">
+                        <div class="card h-100 bg-dark">
+                            <div class="card-body text-center">
+                                <i class="fas fa-file-pdf fa-3x mb-3"></i>
+                                <h5>Automated PDF Output</h5>
+                                <p>Download test papers and answer keys as print-ready PDFs.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <h5><i class="fas fa-lightbulb me-2"></i> Difficulty Levels</h5>
+                        <ul>
+                            <li><strong>Easy:</strong> Basic operations, small numbers, straightforward problems</li>
+                            <li><strong>Medium:</strong> Multiple steps, larger numbers, more complex concepts</li>
+                            <li><strong>Hard:</strong> Advanced topics, multi-step problems, challenging calculations</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="col-md-6 mb-3">
+                        <h5><i class="fas fa-balance-scale me-2"></i> Preventing Cheating</h5>
+                        <p>Our system ensures fairness while preventing copying:</p>
+                        <ul>
+                            <li>All test versions assess the same skills and knowledge</li>
+                            <li>Questions have equivalent difficulty but different variables</li>
+                            <li>Answer keys are password-protected for teacher use only</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

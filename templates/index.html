@@ -1,0 +1,167 @@
+{% extends 'layout.html' %}
+
+{% block title %}Math Test Generator - Home{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-10">
+        <div class="card border-0 shadow-sm">
+            <div class="card-body p-4">
+                <h1 class="display-4 text-center mb-4">
+                    <i class="fas fa-square-root-alt me-2"></i> Math Test Generator
+                </h1>
+                
+                <p class="lead text-center">
+                    Create unique math tests with secure answer keys to prevent cheating while ensuring fairness.
+                </p>
+                
+                <hr class="my-4">
+                
+                <div class="row mb-4">
+                    <div class="col-md-4 mb-3 mb-md-0">
+                        <div class="card h-100 bg-dark">
+                            <div class="card-body text-center">
+                                <i class="fas fa-random fa-3x mb-3"></i>
+                                <h3>Unique Versions</h3>
+                                <p>Generate multiple unique versions of the same test with equivalent but different questions.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-4 mb-3 mb-md-0">
+                        <div class="card h-100 bg-dark">
+                            <div class="card-body text-center">
+                                <i class="fas fa-lock fa-3x mb-3"></i>
+                                <h3>Secure Access</h3>
+                                <p>QR codes and password protection ensure only teachers can access answer keys.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-4">
+                        <div class="card h-100 bg-dark">
+                            <div class="card-body text-center">
+                                <i class="fas fa-file-pdf fa-3x mb-3"></i>
+                                <h3>Instant PDFs</h3>
+                                <p>Download print-ready PDFs containing all test versions and their secure answer keys.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="alert alert-info mb-4">
+                    <div class="row align-items-center">
+                        <div class="col-md-8">
+                            <h4 class="alert-heading mb-2"><i class="fas fa-shield-alt me-2"></i> Anti-Cheating Solution</h4>
+                            <p class="mb-0">Our system creates multiple unique but equivalent versions of the same test. Each student receives different questions that assess identical skills and maintain consistent difficulty levels.</p>
+                        </div>
+                        <div class="col-md-4 text-center text-md-end mt-3 mt-md-0">
+                            <a href="{{ url_for('create_test') }}" class="btn btn-primary btn-lg">
+                                <i class="fas fa-plus-circle me-2"></i> Create Tests Now
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <h2 class="text-center mb-4">Available Topics</h2>
+                
+                <div class="row mb-4">
+                    <div class="col-md-6 col-lg-4 mb-3">
+                        <div class="card h-100 border-0 bg-dark">
+                            <div class="card-body">
+                                <h4><i class="fas fa-plus-minus me-2"></i> Basic Arithmetic</h4>
+                                <ul>
+                                    <li>Addition</li>
+                                    <li>Subtraction</li>
+                                    <li>Multiplication</li>
+                                    <li>Division</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6 col-lg-4 mb-3">
+                        <div class="card h-100 border-0 bg-dark">
+                            <div class="card-body">
+                                <h4><i class="fas fa-superscript me-2"></i> Intermediate Topics</h4>
+                                <ul>
+                                    <li>Fractions</li>
+                                    <li>Decimals</li>
+                                    <li>Percentages</li>
+                                    <li>Basic Algebra</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6 col-lg-4 mb-3">
+                        <div class="card h-100 border-0 bg-dark">
+                            <div class="card-body">
+                                <h4><i class="fas fa-chart-line me-2"></i> Advanced Topics</h4>
+                                <ul>
+                                    <li>Geometry</li>
+                                    <li>Statistics</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card border-0 shadow-sm mt-4">
+            <div class="card-body p-4">
+                <h2 class="text-center mb-4">How It Works for Teachers</h2>
+                
+                <div class="row">
+                    <div class="col-md-3 mb-4 mb-md-0">
+                        <div class="text-center">
+                            <div class="bg-dark rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
+                                <span class="h3 mb-0">1</span>
+                            </div>
+                            <h4>Create Tests</h4>
+                            <p>Choose topics, difficulty, and specify how many unique versions you need.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-3 mb-4 mb-md-0">
+                        <div class="text-center">
+                            <div class="bg-dark rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
+                                <span class="h3 mb-0">2</span>
+                            </div>
+                            <h4>Set Password</h4>
+                            <p>Create a password that only you will know to protect answer access.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-3 mb-4 mb-md-0">
+                        <div class="text-center">
+                            <div class="bg-dark rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
+                                <span class="h3 mb-0">3</span>
+                            </div>
+                            <h4>Download PDFs</h4>
+                            <p>Get a single PDF with all test versions, each with a unique QR code.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-3">
+                        <div class="text-center">
+                            <div class="bg-dark rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
+                                <span class="h3 mb-0">4</span>
+                            </div>
+                            <h4>Access Answers</h4>
+                            <p>Use QR codes and your password to securely view answer keys.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="text-center mt-4">
+                    <a href="{{ url_for('create_test') }}" class="btn btn-primary btn-lg px-5">
+                        <i class="fas fa-plus-circle me-2"></i> Get Started
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
